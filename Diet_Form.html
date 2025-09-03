@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Diet Plan Form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<!-- <script>
+document.querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    if (data[key]) {
+      if (Array.isArray(data[key])) {
+        data[key].push(value);
+      } else {
+        data[key] = [data[key], value];
+      }
+    } else {
+      data[key] = value;
+    }
+  });
+  fetch('/save-form', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.text())
+  .then(msg => alert(msg));
+});
+
+// Button to display saved data
+function showSavedData() {
+  fetch('/get-form')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('displayDiv').innerText = data;
+    });
+}
+</script>
+<div id="displayDiv"></div>
+<button type="button" onclick="showSavedData()">Show Saved Data</button> -->
+
+<body>
+
+  <form>
+    <h2>Personalized Diet Plan Form</h2>
+
+    <fieldset>
+      <legend>Personal Information</legend>
+      <label for="name">Full Name *</label>
+      <input type="text" id="name" name="name" required>
+      <br>
+      <label for="age">Age(in years) *</label>
+      <input type="number" id="age" name="age" required min="1" max="120">
+      <br>
+      <label id="genderid">Gender *</label>
+        <div class="radio-group">
+            <label><input type="radio" name="gender" value="Male" required> Male</label>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
+            <label><input type="radio" name="gender" value="Other"> Other</label>
+        </div>
+
+
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required>
+      <br>
+      <label for="phone">Phone Number *</label>
+      <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" title="Enter 10-digit number">
+    </fieldset>
+
+    <fieldset>
+      <legend>Health & Goals</legend>
+      <label for="goal">Fitness Goal *</label>
+      <select id="goal" name="goal" required>
+        <option value="">--Select--</option>
+        <option>Weight Loss</option>
+        <option>Muscle Gain</option>
+        <option>Maintain Weight</option>
+        <option>Improve Energy</option>
+      </select>
+      <br>
+      <label for="currentWeight">Current Weight (kg) *</label>
+      <input type="number" id="currentWeight" name="currentWeight" required>
+      <br>
+      <label for="targetWeight">Target Weight (kg)</label>
+      <input type="number" id="targetWeight" name="targetWeight">
+      <br>
+      <label for="progress">Progress</label>
+      <progress value="25" max="100"></progress>
+      <br>
+      <label for="height">Height (cm) *</label>
+      <input type="number" id="height" name="height" required>
+      <br>
+      <label for="activity">Activity Level *</label>
+      <select id="activity" name="activity" required>
+        <option value="">--Select--</option>
+        <option>Sedentary</option>
+        <option>Lightly Active</option>
+        <option>Moderately Active</option>
+        <option>Very Active</option>
+        <option>Super Active</option>
+      </select>
+    </fieldset>
+
+
+    <fieldset>
+      <legend>Exercise Routine</legend>
+      <label for="exerciseType">Type of Exercise</label>
+      <select id="exerciseType" name="exerciseType">
+        <option value="">--Select--</option>
+        <option>Cardio</option>
+        <option>Strength Training</option>
+        <option>Yoga/Pilates</option>
+        <option>High-Intensity Interval Training (HIIT)</option>
+        <option>Flexibility Exercises</option>
+      </select>
+      <br>
+      <label for="exerciseDuration">Duration (minutes)</label>
+      <input type="number" id="exerciseDuration" name="exerciseDuration" min="0" max="180">
+    </fieldset>
+
+    <fieldset>
+      <legend>Medical Conditions</legend>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="condition" value="Diabetes"> Diabetes</label>
+        <label><input type="checkbox" name="condition" value="Hypertension"> Hypertension</label>
+        <label><input type="checkbox" name="condition" value="Thyroid"> Thyroid</label>
+        <label><input type="checkbox" name="condition" value="PCOS/PCOD"> PCOS/PCOD</label>
+        <label><input type="checkbox" name="condition" value="Heart Issues"> Heart Issues</label>
+        <label><input type="checkbox" name="condition" value="None"> None</label>
+      </div>
+      
+    </fieldset>
+
+    <fieldset>
+      <legend>Dietary Preferences</legend>
+      <label>Diet Type *</label>
+      <div class="radio-group">
+        <input type="radio" name="diet" value="Vegetarian" required> Vegetarian
+        <input type="radio" name="diet" value="Non-Vegetarian"> Non-Vegetarian
+        <input type="radio" name="diet" value="Vegan"> Vegan
+        <input type="radio" name="diet" value="Eggetarian"> Eggetarian
+      </div>
+      <br>
+      <label for="date">Start date for Diet plan</label>
+      <input type="date" name="startDate" id="dietStartDate" required>
+      <br>
+      <label for="allergies">Food Allergies (if any)</label>
+      <textarea id="allergies" name="allergies" rows="2"></textarea>
+      <br>
+      <label for="dislikes">Foods You Dislike</label>
+      <textarea id="dislikes" name="dislikes" rows="2"></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>Meal Preferences</legend>
+      <label for="breakfast">Breakfast Preference</label>
+      <select id="breakfast" name="breakfast">
+        <option value="">--Select--</option>
+        <option>Continental</option>
+        <option>Indian</option>
+        <option>Healthy</option>
+        <option>Quick Meals</option>
+      </select>
+      <br>
+      <label for="lunch">Lunch Preference</label>
+      <select id="lunch" name="lunch">
+        <option value="">--Select--</option>
+        <option>Vegetarian</option>
+        <option>Non-Vegetarian</option>
+        <option>Vegan</option>
+      </select>
+      <br>
+      <label for="dinner">Dinner Preference</label>
+      <select id="dinner" name="dinner">
+        <option value="">--Select--</option>
+        <option>Light Meal</option>
+        <option>Full Meal</option>
+        <option>Snacks Only</option>
+      </select>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Diet Plan Preferences</legend>
+      <label for="mealFrequency">Meals per Day</label>
+      <select id="mealFrequency" name="mealFrequency">
+        <option value="">--Select--</option>
+        <option>3 Meals</option>
+        <option>4 Meals</option>
+        <option>5 Meals</option>
+        <option>6+ Meals</option>
+      </select>
+      <br>
+      <label for="snackPreference">Snack Preference</label>
+      <select id="snackPreference" name="snackPreference">
+        <option value="">--Select--</option>
+        <option>Healthy Snacks</option>
+        <option>Fruits Only</option>
+        <option>No Snacks</option>
+      </select>
+      <br>
+      <label for="cuisinePreference">Preferred Cuisine</label>
+      <select id="cuisinePreference" name="cuisinePreference">
+        <option value="">--Select--</option>
+        <option>Indian</option>
+        <option>Continental</option>
+        <option>Asian</option>
+        <option>Mexican</option>
+        <option>Italian</option>
+      </select>
+      <br>
+      <label for="spiceLevel">Preferred Spice Level</label>
+      <select id="spiceLevel" name="spiceLevel">
+        <option value="">--Select--</option>
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+        <option>Extra Spicy</option>
+      </select>
+      <br>
+      <label for="mealPrepTime">Preferred Meal Prep Time</label>
+      <input type="time" id="mealPrepTime" name="mealPrepTime">
+      <br>
+      <label for="mealPrepDays">Preferred Meal Prep Days</label>
+      <select id="mealPrepDays" name="mealPrepDays" multiple>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+      <br>
+      <label for="mealBudget">Meal Budget (per day)</label>
+      <input type="number" id="mealBudget" name="mealBudget" min="0" step="0.01">
+      <br>  
+      <label for="mealPlanDuration">Preferred Meal Plan Duration</label>
+      <select id="mealPlanDuration" name="mealPlanDuration">
+        <option value="">--Select--</option>
+        <option>1 Week</option>
+        <option>2 Weeks</option>
+        <option>1 Month</option>
+        <option>3 Months</option>
+        <option>6 Months</option>
+        <option>1 Year</option>
+      </select>
+      <br>
+      <label for="mealPlanStartDate">Meal Plan Start Date</label>
+      <input type="date" id="mealPlanStartDate" name="mealPlanStartDate">
+      <br>
+      <label for="mealPlanEndDate">Meal Plan End Date</label>
+      <input type="date" id="mealPlanEndDate" name="mealPlanEndDate">
+      <br>
+      <label for="mealPlanNotes">Additional Notes for Meal Plan</label>
+      <textarea id="mealPlanNotes" name="mealPlanNotes" rows="4"></textarea>
+    </fieldset>
+    <fieldset>
+      <legend>Diet Plan Customization</legend>
+      <label for="customization">Any specific dietary restrictions or preferences</label>
+      <textarea id="customization" name="customization" rows="4"></textarea>
+      <br>
+      <label for="mealPlanType">Preferred Meal Plan Type</label>
+      <select id="mealPlanType" name="mealPlanType">
+        <option value="">--Select--</option>
+        <option>Standard</option>
+        <option>Custom</option>
+        <option>Vegetarian</option>
+        <option>Vegan</option>
+        <option>Gluten-Free</option>
+      </select>
+      <br>
+      <label for="mealPlanFrequency">Meal Plan Frequency</label>
+      <select id="mealPlanFrequency" name="mealPlanFrequency">
+        <option value="">--Select--</option>
+        <option>Daily</option>
+        <option>Weekly</option>
+        <option>Bi-Weekly</option>
+        <option>Monthly</option>
+      </select>
+      <br>
+      <label for="mealPlanFeedback">Feedback on Previous Meal Plans</label>
+      <textarea id="mealPlanFeedback" name="mealPlanFeedback" rows="4"></textarea>
+      <br>
+      <label for="mealPlanSuggestions">Suggestions for Improvement</label>
+      <textarea id="mealPlanSuggestions" name="mealPlanSuggestions" rows="4"></textarea>
+      <br>
+      <label for="mealPlanGoals">Specific Goals for Meal Plan</label>
+      <textarea id="mealPlanGoals" name="mealPlanGoals" rows="4"></textarea>
+      <br>
+      <label for="mealPlanChallenges">Challenges faced with previous meal plans</label>
+      <textarea id="mealPlanChallenges" name="mealPlanChallenges" rows="4"></textarea>
+      <br>
+      <label for="mealPlanExpectations">Expectations from the meal plan</label>
+      <textarea id="mealPlanExpectations" name="mealPlanExpectations" rows="4"></textarea>
+      <br>
+      <label for="mealPlanFollowUp">Preferred follow-up method for meal plan</label>
+      <select id="mealPlanFollowUp" name="mealPlanFollowUp">
+        <option value="">--Select--</option>
+        <option>Email</option>
+        <option>Phone Call</option>
+        <option>In-Person Meeting</option>
+        <option>Video Call</option>
+      </select>
+      <br>
+      <label for="mealPlanFollowUpTime">Preferred follow-up time</label>
+      <input type="time" id="mealPlanFollowUpTime" name="mealPlanFollowUpTime">
+      <br>
+      <label for="mealPlanFollowUpDays">Preferred follow-up days</label>
+      <select id="mealPlanFollowUpDays" name="mealPlanFollowUpDays"
+        multiple>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+      <br>
+    </fieldset>
+    <fieldset>
+      <legend>Daily Meal Tracker</legend>
+      <table>
+        <tr>
+          <th>Meal</th>
+          <th>Time</th>
+          <th>Food Items</th>
+        </tr>
+        <tr>
+          <td>Breakfast</td>
+          <td><input type="time" name="breakfastTime"></td>
+          <td><input type="text" name="breakfastItems"></td>
+        </tr>
+        <tr>
+          <td>Mid-Morning</td>
+          <td><input type="time" name="midTime"></td>
+          <td><input type="text" name="midItems"></td>
+        </tr>
+        <tr>
+          <td>Lunch</td>
+          <td><input type="time" name="lunchTime"></td>
+          <td><input type="text" name="lunchItems"></td>
+        </tr>
+        <tr>
+          <td>Evening</td>
+          <td><input type="time" name="eveningTime"></td>
+          <td><input type="text" name="eveningItems"></td>
+        </tr>
+        <tr>
+          <td>Dinner</td>
+          <td><input type="time" name="dinnerTime"></td>
+          <td><input type="text" name="dinnerItems"></td>
+        </tr>
+      </table>
+    </fieldset>
+    <fieldset>
+      <legend>Water Intake</legend>
+      <label for="water">Water Intake (Litres/day)</label>
+      <select id="water" name="water">
+        <option value="">--Select--</option>
+        <option>1 L</option>
+        <option>2 L</option>
+        <option>3 L</option>
+        <option>4 L</option>
+        <option>5+ L</option>
+      </select>
+    </fieldset>
+    
+    
+
+    <fieldset>
+      <legend>Sleep Goal</legend>
+      <label for="sleep">Hours slept in a day</label>
+      <input type="range" name="sleep" id="sleep" min="0" max="8" step="0.5" oninput="this.nextElementSibling.value = this.value">
+      <output>6</output>
+    </fieldset>
+    <fieldset>
+      <legend>Feedback</legend>
+      <label for="feedback">Any additional comments or feedback</label>
+      <textarea id="feedback" name="feedback" rows="4"></textarea>
+    </fieldset>
+    <fieldset>
+      <legend>Privacy Policy</legend>
+      <label><input type="checkbox" name="privacy" required> I agree to the <a href="#">Privacy Policy</a></label>
+    </fieldset>
+    <fieldset>
+      <legend>Terms and Conditions</legend>
+      <label><input type="checkbox" name="terms" required> I agree to the <a href="#">Terms and Conditions</a></label>
+    </fieldset>
+    <fieldset>
+      <legend>Newsletter Subscription</legend>
+      <label><input type="checkbox" name="newsletter"> Subscribe to our newsletter for diet tips and updates</label>
+    </fieldset>
+    <fieldset>
+      <legend>Contact Preferences</legend>
+      <label for="contactMethod">Preferred Contact Method</label>
+      <select id="contactMethod" name="contactMethod">
+        <option value="">--Select--</option>
+        <option>Email</option>
+        <option>Phone</option>
+        <option>WhatsApp</option>
+      </select>
+      <br>
+      <label for="contactTime">Best Time to Contact</label>
+      <input type="time" id="contactTime" name="contactTime">
+      <br>
+      <label for="contactDays">Preferred Days for Contact</label>
+      <select id="contactDays" name="contactDays" multiple>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+      <br>
+      <label for="contactTimeZone">Time Zone</label>
+      <select id="contactTimeZone" name="contactTimeZone">
+        <option value="">--Select--</option>
+        <option>GMT</option>
+        <option>EST</option>
+        <option>PST</option>
+        <option>CST</option>
+        <option>IST</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>Referral Source</legend>
+      <label for="referral">How did you hear about us?</label>
+      <select id="referral" name="referral">
+        <option value="">--Select--</option>
+        <option>Social Media</option>
+        <option>Friend/Family</option>
+        <option>Search Engine</option>
+        <option>Advertisement</option>
+        <option>Other</option>
+      </select>
+      <br>
+      <label for="referralDetails">If Other, please specify</label>
+      <input type="text" id="referralDetails" name="referralDetails">
+    </fieldset>
+    <fieldset>
+      <legend>Emergency Contact</legend>
+      <label for="emergencyName">Emergency Contact Name</label>
+      <input type="text" id="emergencyName" name="emergencyName">
+      <br>
+      <label for="emergencyPhone">Emergency Contact Phone</label>
+      <input type="tel" id="emergencyPhone" name="emergencyPhone" pattern="[0-9]{10}" title="Enter 10-digit number">
+      <br>
+      <label for="emergencyRelation">Relation to Emergency Contact</label>
+      <input type="text" id="emergencyRelation" name="emergencyRelation">
+    </fieldset>
+    
+    <fieldset>
+      <legend>Diet Plan Submission</legend>
+      <label for="submitDate">Submission Date</label>
+      <input type="date" id="submitDate" name="submitDate" required>
+      <br>
+      <label for="submitTime">Submission Time</label>
+      <input type="time" id="submitTime" name="submitTime" required>
+      <br>
+      <label for="submitBy">Submitted By</label>
+      <input type="text" id="submitBy" name="submitBy" required>
+      <br>
+    </fieldset> 
+
+    
+    <button type="submit">Submit Plan</button>
+    <button type="reset">Clear Form</button>
+  </form>
+  
+
+</body>
+</html>
